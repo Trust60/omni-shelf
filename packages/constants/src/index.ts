@@ -1,4 +1,4 @@
-import type { TMediaType, TStatus } from "../../types/src";
+import type { TMediaType, TStatus } from "@app/types";
 
 export const STATUS_LABELS: Record<TStatus, string> = {
   want: "Want",
