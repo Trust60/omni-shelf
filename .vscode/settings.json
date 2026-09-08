@@ -3,5 +3,29 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
+  },
+
+  // Свотчі для дизайн-токенів з packages/tokens/src/colors.ts.
+  // Тримати в синхроні з colors.ts вручну.
+  "highlight.regexFlags": "g",
+  "highlight.regexes": {
+    "(\\bcolors\\.primary\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#ffffff", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.secondary\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#333333", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+
+    "(\\bcolors\\.text\\.primary\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#fcfeff", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.text\\.secondary\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#040106", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.text\\.muted\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#707070", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.text\\[['\"]little-muted['\"]\\])": [{ "before": { "contentText": " ", "backgroundColor": "#a5a3a6", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+
+    "(\\bcolors\\.bg\\.base\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#020003", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.bg\\.card\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#262626", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.bg\\.elevated\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#000000", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+
+    "(\\bcolors\\.border\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#171717", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.select\\b)": [{ "before": { "contentText": " ", "backgroundColor": "rgba(129, 65, 248, 0.14)", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+
+    "(\\bcolors\\.status\\.success\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#8141F8", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.status\\.warning\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#F6A290", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }],
+    "(\\bcolors\\.status\\.error\\b)": [{ "before": { "contentText": " ", "backgroundColor": "#FF3F15", "border": "1px solid #888", "width": "0.85em", "height": "0.85em", "margin": "0 0.3em 0 0" } }]
   }
 }
