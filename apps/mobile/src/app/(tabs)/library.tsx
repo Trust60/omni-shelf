@@ -7,9 +7,15 @@ import { TYPE_LABELS } from '@app/constants'
 
 import { colors, fontSize, space } from '@app/tokens'
 
+import { useLibraryFindAll } from '@app/api'
+
 import { Screen } from '@/components/Screen'
 
 export default function Library() {
+  const { data, status } = useLibraryFindAll({
+    take: 20
+  })
+
   return (
     <Screen>
       <Text>Library</Text>
