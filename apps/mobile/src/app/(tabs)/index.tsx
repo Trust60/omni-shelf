@@ -1,13 +1,16 @@
-import { Play, Plus } from 'lucide-react-native'
-import { ScrollView, StyleSheet } from 'react-native'
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue
+} from 'react-native-reanimated'
 
 import { space } from '@app/tokens'
 
 import type { TitleListItemResponse } from '@app/api'
 
-import { HomeHeader } from '@/components/HomeHeader'
+import { HomeHeader } from '@/components/home/HomeHeader'
+import { HomeHeroSlider } from '@/components/home/HomeHeroSlider'
+import { SectionCarousel } from '@/components/section-carousel/SectionCarousel'
 import { TitleCard } from '@/components/title-card/TitleCard'
-import { Button } from '@/components/ui/Button'
 import { Screen } from '@/components/ui/Screen'
 
 export const SAMPLE_TITLES: TitleListItemResponse[] = [
@@ -67,39 +70,46 @@ export const SAMPLE_TITLES: TitleListItemResponse[] = [
 ]
 
 export default function Index() {
+  const scrollY = useSharedValue(0)
+  const scrollHandler = useAnimatedScrollHandler(e => {
+    scrollY.set(e.contentOffset.y)
+  })
+
   return (
-    <Screen>
-      <HomeHeader />
-
-      <Button
-        icon={Play}
-        onPress={() => {}}
+    <Screen edges={[]}>
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: space[20] }}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
       >
-        Watch Movie
-      </Button>
+        <HomeHeroSlider items={SAMPLE_TITLES} />
 
-      <Button
-        icon={Plus}
-        variant='secondary'
-        onPress={() => {}}
-      />
+        <SectionCarousel
+          title='Top pics for you'
+          onPressArrow={() => {}}
+        >
+          {SAMPLE_TITLES.map(title => (
+            <TitleCard
+              key={title.id}
+              title={title}
+              onPress={() => {}}
+            />
+          ))}
+        </SectionCarousel>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{ marginTop: 15 }}
-        contentContainerStyle={{ gap: space[3], paddingHorizontal: space[5] }}
-      >
-        {SAMPLE_TITLES.map(title => (
-          <TitleCard
-            key={title.id}
-            title={title}
-            onPress={() => {}}
-          />
-        ))}
-      </ScrollView>
+        <SectionCarousel title='Popular'>
+          {SAMPLE_TITLES.map(title => (
+            <TitleCard
+              key={title.id}
+              title={title}
+              onPress={() => {}}
+            />
+          ))}
+        </SectionCarousel>
+      </Animated.ScrollView>
+
+      <HomeHeader scrollY={scrollY} />
     </Screen>
   )
 }
-
-const styles = StyleSheet.create({})

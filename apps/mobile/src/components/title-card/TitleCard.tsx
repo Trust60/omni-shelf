@@ -22,6 +22,10 @@ interface Props {
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
+const CARD_WIDTH = 114
+const CARD_HEIGHT = 171
+const STACK_OFFSET = 5
+
 export function TitleCard({ onPress, title }: Props) {
   const config = CARD_CONFIG[title.type]
 
@@ -47,12 +51,36 @@ export function TitleCard({ onPress, title }: Props) {
   )
 
   return (
-    <View style={{ width: config.width, height: config.height }}>
+    <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}>
       {config.stacked && (
         <>
-          <View></View>
+          <View
+            style={[
+              styles.stack,
+              {
+                right: 0,
+                top: STACK_OFFSET * 2,
+                bottom: STACK_OFFSET * 2,
+                borderRadius: config.radius,
+                opacity: 0.45
+              }
+            ]}
+          />
+          <View
+            style={[
+              styles.stack,
+              {
+                right: STACK_OFFSET,
+                top: STACK_OFFSET,
+                bottom: STACK_OFFSET,
+                borderRadius: config.radius,
+                opacity: 0.75
+              }
+            ]}
+          />
         </>
       )}
+
       <AnimatedPressable
         onPress={onPress}
         onPressIn={handlePressIn}
@@ -60,10 +88,12 @@ export function TitleCard({ onPress, title }: Props) {
         style={[
           styles.card,
           animated,
-          {
-            borderRadius: config.radius,
-            borderWidth: config.glow ? 1 : 0,
-            borderColor: config.glow ?? 'transparent'
+          { borderRadius: config.radius },
+          config.stacked && { marginRight: STACK_OFFSET * 2 },
+          config.glow && {
+            borderWidth: 1,
+            borderColor: config.glow,
+            boxShadow: `0px 0px 14px 0px ${config.glow}`
           }
         ]}
       >
@@ -78,10 +108,15 @@ export function TitleCard({ onPress, title }: Props) {
           <>
             <LinearGradient
               colors={[
-                'rgba(0,0,0,0.65)',
-                'rgba(255,255,255,0.12)',
+                'rgba(0,0,0,0.8)',
+                'rgba(255,255,255,0.22)',
+                'rgba(0,0,0,0.35)',
                 'transparent'
               ]}
+              locations={[0, 0.5, 0.85, 1]}
+              start={{ x: 0, y: 0.5 }}
+              end={{ x: 1, y: 0.5 }}
+              style={styles.spine}
             />
             <View style={styles.pages} />
           </>
@@ -121,9 +156,9 @@ const styles = StyleSheet.create({
   },
   stack: {
     position: 'absolute',
-    height: '100%',
-    backgroundColor: colors.bg.elevated,
-    borderWidth: 1,
+    left: STACK_OFFSET * 2,
+    backgroundColor: colors.bg.card,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border
   },
   spine: {
@@ -131,15 +166,15 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
-    width: 10
+    width: 12
   },
   pages: {
     position: 'absolute',
     right: 0,
-    top: 4,
-    bottom: 4,
-    width: 2,
-    backgroundColor: 'rgba(255,255,255,0.18)'
+    top: 3,
+    bottom: 3,
+    width: 3,
+    backgroundColor: 'rgba(255,255,255,0.22)'
   },
   badge: {
     position: 'absolute',

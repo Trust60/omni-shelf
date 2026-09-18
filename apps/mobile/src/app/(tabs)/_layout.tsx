@@ -5,7 +5,6 @@ import { colors } from '@app/tokens'
 export default function TabsLayout() {
   return (
     <NativeTabs
-      minimizeBehavior='onScrollDown'
       tintColor={colors.primary}
       iconColor={{
         default: colors.text['little-muted'],

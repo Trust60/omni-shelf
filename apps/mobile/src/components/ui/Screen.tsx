@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { colors, space } from '@app/tokens'
+import { colors } from '@app/tokens'
 
 interface Props {
   children: ReactNode
@@ -10,6 +10,10 @@ interface Props {
 }
 
 export function Screen({ children, edges = ['top'] }: Props) {
+  if (edges.length == 0) {
+    return <View style={styles.root}>{children}</View>
+  }
+
   return (
     <SafeAreaView
       style={styles.root}
@@ -23,7 +27,6 @@ export function Screen({ children, edges = ['top'] }: Props) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: colors.bg.base,
-    paddingHorizontal: space[6]
+    backgroundColor: colors.bg.base
   }
 })
