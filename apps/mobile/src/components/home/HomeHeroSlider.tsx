@@ -1,12 +1,12 @@
 import { Image } from 'expo-image'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Play, Plus } from 'lucide-react-native'
+import { router } from 'expo-router'
+import { Plus } from 'lucide-react-native'
 import { useState } from 'react'
 import {
   type NativeScrollEvent,
   type NativeSyntheticEvent,
   StyleSheet,
-  Text,
   View,
   useWindowDimensions
 } from 'react-native'
@@ -19,16 +19,22 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated'
 
-import { colors, fontSize, fontWeight, space } from '@app/tokens'
+import { TYPE_ACTION_LABELS } from '@app/constants'
 
-import type { TitleListItemResponse } from '@app/api'
+import { space } from '@app/tokens'
 
+import type { DiscoverItemResponse } from '@app/api'
+
+import { MEDIA_TYPE_ICONS } from '@/constants/media-type'
+
+import { HERO_GRADIENT } from '../hero/HeroBackdrop'
+import { TitleInfo } from '../hero/TitleInfo'
 import { Button } from '../ui/Button'
 
 import { PaginationDot } from './PaginationDot'
 
 interface Props {
-  items: TitleListItemResponse[]
+  items: DiscoverItemResponse[]
 }
 
 export function HomeHeroSlider({ items }: Props) {
@@ -68,6 +74,8 @@ export function HomeHeroSlider({ items }: Props) {
     appear.set(withTiming(1, { duration: 280 }))
   }
 
+  if (!current) return null
+
   return (
     <View style={{ height }}>
       <Animated.ScrollView
@@ -82,7 +90,7 @@ export function HomeHeroSlider({ items }: Props) {
       >
         {items.map(item => (
           <Image
-            key={item.id}
+            key={item.key}
             source={item.coverUrl}
             style={{ width, height }}
             contentFit='cover'
@@ -92,13 +100,8 @@ export function HomeHeroSlider({ items }: Props) {
       </Animated.ScrollView>
 
       <LinearGradient
-        colors={[
-          'rgba(2,0,3,0.7)',
-          'transparent',
-          'rgba(2,0,3,0.9)',
-          colors.bg.base
-        ]}
-        locations={[0, 0.3, 0.9, 1]}
+        colors={HERO_GRADIENT.colors}
+        locations={HERO_GRADIENT.locations}
         style={StyleSheet.absoluteFill}
         pointerEvents='none'
       />
@@ -109,36 +112,28 @@ export function HomeHeroSlider({ items }: Props) {
       >
         <Animated.View
           style={[styles.info, infoStyle]}
-          pointerEvents='none'
-        >
-          <Text
-            style={styles.name}
-            numberOfLines={2}
-          >
-            {current?.name}
-          </Text>
-
-          <Text style={styles.genres}>Thrillers · Dramas · Action · Crime</Text>
-
-          <Text
-            style={styles.description}
-            numberOfLines={2}
-          >
-            When an overachiving college senior makes a mistake that leads to
-            the death of her family, she is forced to
-          </Text>
-        </Animated.View>
-
-        <View
-          style={styles.bottom}
           pointerEvents='box-none'
         >
-          <View style={styles.actions}>
+          <View pointerEvents='none'>
+            <TitleInfo
+              name={current.name || ''}
+              meta={current.genres?.slice(0, 3)}
+              description='When an overachiving college senior makes a mistake that leads to
+            the death of her family, she is forced to'
+            />
+          </View>
+
+          <View
+            style={styles.actions}
+            pointerEvents='box-none'
+          >
             <Button
-              icon={Play}
-              onPress={() => {}}
+              icon={MEDIA_TYPE_ICONS[current.type]}
+              onPress={() => {
+                router.push(`/title/${current.key}`)
+              }}
             >
-              Watch Movie
+              {TYPE_ACTION_LABELS[current.type]}
             </Button>
 
             <Button
@@ -147,20 +142,19 @@ export function HomeHeroSlider({ items }: Props) {
               onPress={() => {}}
             />
           </View>
-
-          <View
-            style={styles.dots}
-            pointerEvents='none'
-          >
-            {items.map((item, index) => (
-              <PaginationDot
-                key={item.id}
-                index={index}
-                width={width}
-                scrollX={scrollX}
-              />
-            ))}
-          </View>
+        </Animated.View>
+        <View
+          style={styles.dots}
+          pointerEvents='none'
+        >
+          {items.map((item, index) => (
+            <PaginationDot
+              key={item.key}
+              index={index}
+              width={width}
+              scrollX={scrollX}
+            />
+          ))}
         </View>
       </View>
     </View>
@@ -180,34 +174,15 @@ const styles = StyleSheet.create({
   info: {
     gap: space[4]
   },
-  genres: {
-    color: colors.text.primary,
-    fontSize: fontSize.sm
-  },
-  name: {
-    color: colors.text.primary,
-    fontSize: fontSize['3xl'],
-    fontWeight: fontWeight.bold
-  },
   actions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: space[3]
-  },
-  description: {
-    color: colors.text['little-muted'],
-    fontSize: fontSize.sm,
-    lineHeight: 20
-  },
-  bottom: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
+    gap: space[3],
     marginTop: space[3]
   },
   dots: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
     gap: space[2]
   }
 })

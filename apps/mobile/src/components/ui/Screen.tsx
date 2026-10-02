@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@app/tokens'
 
 interface Props {
-  children: ReactNode
+  children?: ReactNode
   edges?: ('top' | 'bottom')[]
 }
 

@@ -11,12 +11,13 @@ import Animated, {
 
 import { colors, radius, space } from '@app/tokens'
 
-import type { TitleListItemResponse } from '@app/api'
+import type { DiscoverItemResponse } from '@app/api'
 
 import { CARD_CONFIG } from './config'
+import { MEDIA_TYPE_ICONS } from '@/constants/media-type'
 
 interface Props {
-  title: TitleListItemResponse
+  title: Pick<DiscoverItemResponse, 'type' | 'coverUrl'>
   onPress: () => void
 }
 
@@ -28,6 +29,7 @@ const STACK_OFFSET = 5
 
 export function TitleCard({ onPress, title }: Props) {
   const config = CARD_CONFIG[title.type]
+  const Icon = MEDIA_TYPE_ICONS[title.type]
 
   const scale = useSharedValue(1)
 
@@ -43,7 +45,7 @@ export function TitleCard({ onPress, title }: Props) {
   }
 
   const badgeIcon = (
-    <config.icon
+    <Icon
       size={13}
       color={colors.text.primary}
       strokeWidth={2.2}

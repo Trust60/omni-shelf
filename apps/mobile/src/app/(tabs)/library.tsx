@@ -1,7 +1,6 @@
 import { useLibraryFindAll } from '@app/api'
 
-import { Screen } from '@/components/ui/Screen'
-import ScreenTitle from '@/components/ui/ScreenTitle'
+import { Screen, ScreenTitle } from '@/components/ui'
 
 export default function Library() {
   const { data, status } = useLibraryFindAll({
